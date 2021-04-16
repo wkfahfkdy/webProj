@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calendar.html</title>
+</head>
+
+<body>
+    <!-- <script>
+        var today = new Date(2021, 3, 0);
+        console.log(today.getDay());
+    </script> -->
+    <table border="1">
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>9</td>
+            <td>10</td>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <td>14</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>16</td>
+            <td>17</td>
+            <td>18</td>
+            <td>19</td>
+            <td>20</td>
+            <td>21</td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>23</td>
+            <td>24</td>
+            <td>25</td>
+            <td>26</td>
+            <td>27</td>
+            <td>28</td>
+        </tr>
+        <tr>
+            <td>29</td>
+            <td>30</td>
+            <td>31</td>
+        </tr>
+    </table>
+    <script>
+        var today = new Date(2021, 3, 0);
+        console.log(today.getDay());
+        var tbl = '<table border="1">';
+        tbl += '<tr>';
+        for (var i = 1; i <= 31; i++) {
+            tbl += '<td>' + i + '</td>';
+            if (i % 7 == 0) {
+                tbl += '</tr><tr>';
+            }
+        }
+        tbl += '</tr>'
+        tbl += '</table>'
+        document.write(tbl);
+    </script>
+
+    <script>
+        var today = new Date(2021, 3, 1);
+        trtoday = today.getDay();
+        console.log(today.getDay());
+        var lastDay = new Date(2021, 4, 0);
+        console.log(lastDay.getDate());
+        lastDate = lastDay.getDay();
+
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Tur', 'Fri', 'Sat']
+        var tbl = '<table border="1">';
+        tbl += '<tr>';
+        for (day of days) {
+            tbl += '<th>' + day + '</th>'; //토,일 색칠해보기
+        }
+        tbl += '</tr>';
+        tbl += '<tr>';
+        for (var k = 1; k <= trtoday; k++) {
+            tbl += '<td></td>';
+        }
+        for (var i = 1; i <= lastDay.getDate(); i++) {
+            tbl += '<td>' + i + '</td>';
+            if (i % 7 == (7-trtoday)) {
+                tbl += '</tr><tr>';
+            }
+        }
+        for (var i = 1; i <= (6-lastDate); i++){
+            tbl += '<td></td>'
+        }
+        tbl += '</tr></table>'
+        document.write(tbl);
+    </script>
+
+    <br><br><br><br>
+
+
+
+    <script>
+        for (var i = 0; i < 12; i++) {
+            var monthToday = new Date(2021, i, 1);
+            trtoday = monthToday.getDay();
+            console.log(trtoday);
+            var lastDay = new Date(2021, (i + 1), 0);
+            console.log(lastDay.getDate());
+            todate = lastDay.getDate();
+
+            var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Tur', 'Fri', 'Sat']
+            var tbl = '<table border="1">';
+            tbl += '<tr>';
+            for (day of days) {
+                tbl += '<th>' + day + '</th>';
+            }
+            tbl += '</tr>';
+            tbl += '<tr>';
+            for (var k = 1; k <= trtoday; k++) {
+                tbl += '<td></td>';
+            }
+            for (var j = 1; j <= todate; j++) {
+                tbl += '<td>' + j + '</td>';
+                if (j % 7 == (7 - trtoday)) {
+                    tbl += '</tr><tr>';
+                }
+            }
+
+            tbl += '</tr></table>'
+            document.write(tbl);
+        }
+    </script>
+</body>
+
+</html>
