@@ -119,24 +119,26 @@
             todate = lastDay.getDate();
             lastSq = lastDay.getDay();
 
-            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+            var months = new Array();
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
             var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Tur', 'Fri', 'Sat']
             var tbl = '<table border="1">';
 
+            tbl += '<caption align="center"><b><font size = "5">' + months[i] + '</b></caption>'
+            
             tbl += '<tr>';
             for (day of days) {
                 if (day == 'Sun') {
-                    tbl += '<th><font color = "red">' + day + '</th>';
+                    tbl += '<th width = "33"><font color = "red">' + day + '</th>';
                 } else if (day == 'Sat') {
-                    tbl += '<th><font color = "blue">' + day + '</th>';
+                    tbl += '<th width = "33"><font color = "blue">' + day + '</th>';
                 } else {
-                    tbl += '<th>' + day + '</th>';
-
+                    tbl += '<th width = "33">' + day + '</th>';
                 }
-
             }
+            
             tbl += '</tr>';
-            tbl += '<tr>';
+            tbl += '<tr align = "center">';
             for (var k = 1; k <= trtoday; k++) {
                 tbl += '<td></td>';
             }
@@ -148,11 +150,11 @@
                     tbl += '<td><font color = "blue">' + j + '</td>';
                 } else {
                     tbl += '<td>' + j + '</td>';
-                }                
-                if (j % 7 == (7 - trtoday) % 7) {
-                    tbl += '</tr><tr>';
                 }
-                
+
+                if (j % 7 == (7 - trtoday) % 7) {
+                    tbl += '</tr><tr align = "center">';
+                }                
             }
 
             for (var l = 1; l <= (6 - lastSq); l++) {
