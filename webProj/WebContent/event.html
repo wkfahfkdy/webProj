@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event.html</title>
+</head>
+<body>
+    <input type="number" name="firstVal" id="firstVal">
+    <b>+</b>
+    <input type="number" name="lastVal" id="lastVal">
+    <b>=</b>
+    <input type="text" name="result" id="result" readonly> <!--readonly : 읽기만 가능-->
+
+    <script>
+        var ip = document.getElementById('lastVal'); //getElementByTagName(input) >> input 3개 다 나옴
+        ip.onchange = function () {
+            var fv = document.getElementById('firstVal');             
+            var rs = document.getElementById('result');
+            rs.value = parseInt(fv.value) + parseInt(ip.value);
+            
+            console.log(fv, rs);
+        }
+        console.log(ip);
+    </script>
+</body>
+</html>
