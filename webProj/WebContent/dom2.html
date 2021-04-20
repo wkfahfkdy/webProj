@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dom2.html</title>
+</head>
+
+<body>
+    <table id='tbl' border='1'>
+        <tbody>
+            <tr>   
+                <th>이름</th>   
+                <th>점수</th>   <!--document.getElementById('tbl').childNodes[1].childNodes[2] 여기 tr와 td 사이에 text 공간이 있다고한다 그래서 [2]를 치면 text 가 나옴
+                                document.getElementById('tbl').childNodes[1].childNodes[3] 3을 쳐야 th쪽 자식nodes 내용이 나온다. 근데 이거 내용 'Hong' 쪽 내용임. 근데 왜 여기있냐면
+                                console.log로 hong 확인해볼려니 이거까지 인식해서 안됨; 그래서 어쩔수없이 위로 올림-->
+                <th>기능</th>
+            </tr>
+            <tr>                 
+                <td id = 'Hong'>Hong</td>   
+                <td>80</td>
+                <td><button>삭제1</button></td>
+            </tr>
+            <tr>
+                <td id = 'Hwang'>Hwang</td>
+                <td>90</td>
+                <td><button>삭제2</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button>삭제</button>
+    <script>
+        var btns = document.querySelectorAll('tr>td>button');
+        for(var i = 0; i < btns.length; i++){
+            btns[i].onclick = function() {
+                var delVal = this.parentNode.parentNode.childNodes[1].firstChild.nodeValue;
+                delFunc(delVal); //데이터베이스 삭제기능
+                this.parentNode.parentNode.remove();
+            }
+        }
+        console.log(btns);
+
+        function delFunc(val) {
+            //remove
+            console.log(`${val} 삭제됨`)
+        }
+
+    </script>
+</body>
+
+</html>

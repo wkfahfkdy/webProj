@@ -28,8 +28,9 @@
             /* 글자 위아래 -> 중앙으로 위치할때 썼음 */
         }
 
-        .container>div:hover {
+        .container>div:hover{
             cursor: pointer;
+            background-color: skyblue;
             /*마우스 올리면 손가락 모양 나옴*/
         }
 
@@ -37,6 +38,7 @@
             width: 190px;
             padding-right: 10px;
             text-align: right;
+            background-color: #DDDDDD;;
         }
     </style>
 </head>
@@ -68,7 +70,7 @@
         var btns = document.querySelectorAll('div.container > div');
 
         for (var i = 0; i < btns.length; i++) {
-            btns[i].onclick = clickEvent; //일부러 () 안넣음. 넣으면 오류. 왜냐면 안눌렀어도 바로 실행되니까
+            btns[i].onclick = clickEvent; //일부러 () 안넣음. 넣으면 오류. > 왜냐면 안눌렀어도 바로 실행되니까???
         }
 
         var firstVal = 0,
@@ -77,10 +79,10 @@
 
         function clickEvent() {
             // var touchVal = dp.innerHTML;
-            var touchVal = this.innerHTML;
+            var touchVal = this.innerHTML;  // << 뭔지 모르겠음. 누른 값 = 그거 눌렀을 때 html안에 들은 내용?
             // dp.innerHTML = parseInt(touchVal); 도중에 볼려고 했던거라 주석처리
 
-            if (isNaN(touchVal)) { // 숫자가 아닌 경우 = 문자(+-%/*=)인 경우 >>> is Not a Number
+            if (isNaN(touchVal)) { // 숫자가 아닌 경우 = 문자(+-%/*=)인 경우 >>> = is Not a Number
                 if (touchVal == 'C') {
                     firstVal = 0;
                     lastVal = 0;
@@ -89,17 +91,17 @@
                     oper = touchVal;
                 } else {
                     if (oper == '+') {
-                        dp.innerHTML = parseFloat(firstVal) + parseFloat(lastVal)    //더하기는 parseint 해야함
+                        dp.innerHTML = parseFloat(firstVal) + parseFloat(lastVal)    //더하기는 parseint 해야함. 안하면 1+2 = 0102
                     } else if (oper == '-') {
                         dp.innerHTML = parseFloat(firstVal) - parseFloat(lastVal)    //근데 빼기부터는 안해도 되더라
                     } else if (oper == '*') {
-                        dp.innerHTML = parseFloat(firstVal) * parseFloat(lastVal)
+                        dp.innerHTML = parseFloat(firstVal) * parseFloat(lastVal)    //막상 해보니까 parseint를 붙히고 안붙히고의 문제가 아님
                     } else if (oper == '/') {
-                        dp.innerHTML = parseFloat(firstVal) / parseFloat(lastVal)
+                        dp.innerHTML = parseFloat(firstVal) / parseFloat(lastVal)    //나누기가 있는 한 모든 구간에서 실수 구간을 염두에 두고
                     } else if (oper == '%') {
-                        dp.innerHTML = parseFloat(firstVal) % parseFloat(lastVal)
+                        dp.innerHTML = parseFloat(firstVal) % parseFloat(lastVal)    //parseFloat를 앞에다 붙히는걸로 정함
                     } 
-                        firstVal = dp.innerHTML;
+                        firstVal = parseFloat(dp.innerHTML).toFixed(8);
                         lastVal = 0;
                         oper = null;   // 아래 return 에서 수정한거. 연산 이어서 가능
                         
@@ -107,7 +109,7 @@
                 }
             } else { // 숫자인 경우
                 if (oper) {
-                    // lsatVal
+                    // lastVal
                     lastVal += touchVal;
                 } else {
                     // firstVal
@@ -115,7 +117,7 @@
                 }
             }
             dp.innerHTML = parseFloat(firstVal) + oper + (lastVal == 0 ? '' : parseFloat(
-            lastVal)); // lastVal 이 0이면 (?) 안보이게 ('') 0이 아니면 parseInt(lastVal)
+            lastVal)); // lastVal 이 0이면(?) 안보이게('') 0이 아니면 parseInt(lastVal)
         }
     </script>
 </body>
