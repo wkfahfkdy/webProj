@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xml.html</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            // console.log(xhtp.responseXML)
+        })
+    </script>
+</head>
+<body>
+
+    <div id="show"></div>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        xhtp.open('get', 'dataset.xml')
+        xhtp.send();
+        xhtp.onreadystatechange = function () {
+            if(xhtp.readyState == 4 && xhtp.status == 200) {
+                console.log(xhtp.responseXML);  // #document 전체 가져옴
+                var doc = xhtp.responseXML;
+                var records = doc.getElementsByTagName('record'); // record의 모든 정보들을 가져옴. html 내용도 있고 이상한 것들도 많음.
+                var table = document.createElement('table');
+                table.setAttribute('border', '1');
+                
+                // record건 수만큼 반복
+                for(var j = 0; j <records.length; j++){                    
+                    var tr = document.createElement('tr');
+
+                    // 데이터 한 건의 하위 요소들(id, fn, ln, email, gender, ip)
+                    for(var i = 0; i < records[j].children.length; i++){
+                        var td = document.createElement('td');
+                        var text = document.createTextNode(records[j].children[i].innerHTML);
+                        td.appendChild(text);
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+
+                document.getElementById('show').appendChild(table);
+
+                for (var i = 0; i< records.length; i++) {
+                    //id, first_name, last_name, email, gender, ip
+                    console.log(records[i].children[0].innerHTML);
+                }
+            }
+        }
+        
+        
+
+
+    </script>
+
+</body>
+</html>

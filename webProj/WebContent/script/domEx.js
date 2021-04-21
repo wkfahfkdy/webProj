@@ -18,10 +18,11 @@ function delFunc(val) {
 
 function modifyFunc() {
     var idVal = this.innerHTML;
-    var nameVal = this.previousSibling.innerHTML;
+    var nameVal = this.previousSibling.firstChild.innerHTML;    
     var scoreVal = this.nextSibling.innerHTML;
     var genderVal = this.parentNode.childNodes[3].innerHTML;
     // console.log(idVal, nameVal, scoreVal, genderVal);
+    //nameVal에서 this.previousSibling.innerHTML을 하면 아래쪽에 modify를 하려고 만들어둔 <a href= ~~> 값이 들어가서 Hong 같이 안나와서 수정을 함. 
 
     document.getElementById('name').value = nameVal;
     document.getElementById('id').value = idVal;
@@ -80,7 +81,7 @@ function cleanMain() {
     }
     tblTag.appendChild(tr0);
 
-
+    // 회원리스트에 회원정보 보여주는 곳
     for (var person of persons) { // 다른 사람들 createData()
         var tr1 = document.createElement('tr');
         tr1.setAttribute('id', person.id); // 수정할 id 를 눌렀을 때 id 값을 저장해둠
@@ -170,13 +171,16 @@ function saveBtnFnc() {
     tblTag.appendChild(trTag);
 }
 
-function modifyBtnFnc() { //수정 버튼 눌렀을 때 정보 갱신
+function modifyBtnFnc() { //수정 버튼 눌렀을 때 정보 변경
     var id = document.getElementById('id').value;
+    //사용자가 변경한 값을 반영
+    var name = document.getElementById('name').value;
+    var score = document.getElementById('score').value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+
     var targetTr = document.getElementById(id); // value 값에 따라서 해당 user 정보 다 불러옴
-    targetTr.children[0].innerHTML =
-        document.getElementById('name').value;
-    targetTr.children[2].innerHTML =
-        document.getElementById('score').value;
-    targetTr.children[3].innerHTML =
-        document.querySelector('input[name="gender"]:checked').value;
+    // <a href = 'dom.jsp?name=?&id=?&score=?&gender=?'> 
+    targetTr.children[0].innerHTML = '<a href ="dom.jsp?name=' + name + '&id=' + id + '&score=' + score + '&gender=' + gender + '">' + name +'</a>';
+    targetTr.children[2].innerHTML = score;
+    targetTr.children[3].innerHTML = gender;        
 }
