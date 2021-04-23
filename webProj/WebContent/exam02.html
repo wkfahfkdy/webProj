@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam02.html</title>
+    <script src="members.json"></script>
+</head>
+
+<body>
+    <div id='show'></div>
+
+    <script>
+        var xhtp = new XMLHttpRequest();
+
+        xhtp.onreadystatechange = function() {
+            if (xhtp.readyState == 4 && xhtp.status == 200) {
+                jsonFunction(xhtp.responseText);
+            }
+        }
+
+        xhtp.open('get', 'members.json');
+        xhtp.send();
+
+        var table = document.createElement('table');
+        table.setAttribute('border', '1');
+
+        function jsonFunction(resp) {
+            var arr = JSON.parse(resp);
+            var txt = "";
+            for (i = 0; i < arr.length; i++) {
+                var id = arr[i].mem_id;
+                var fName = arr[i].first_name;
+                var lName = arr[i].last_name;
+                var email = arr[i].email;
+                var gender = arr[i].gender;
+                var address = arr[i].address;
+
+                var idVal = document.createTextNode(id);
+                var fNVal = document.createTextNode(fName);
+                var lNVal = document.createTextNode(lName);
+                var emVal = document.createTextNode(email);
+                var geVal = document.createTextNode(gender);
+                var adVal = document.createTextNode(address);
+
+                var tr = document.createElement('tr');
+                var td1 = document.createElement('td');
+                var td2 = document.createElement('td');
+                var td3 = document.createElement('td');
+                var td4 = document.createElement('td');
+                var td5 = document.createElement('td');
+                var td6 = document.createElement('td');
+                
+                td1.appendChild(idVal);
+                td2.appendChild(fNVal);
+                td3.appendChild(lNVal);
+                td4.appendChild(emVal);
+                td5.appendChild(geVal);
+                td6.appendChild(adVal);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+                tr.appendChild(td6);
+
+                table.appendChild(tr);
+
+                document.getElementById('show').appendChild(table);                
+
+                
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam03.html</title>
+</head>
+
+<body>
+    <div id='show'></div>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        xhtp.open('get', 'employees.xml');
+        xhtp.send();
+        xhtp.onreadystatechange = function () {
+            if (xhtp.readyState == 4 && xhtp.status == 200) {
+                console.log(xhtp.responseXML);
+                var doc = xhtp.responseXML;
+                var records = doc.getElementsByTagName('record');
+
+               
+                for (var i; i < records[i].length; i++){
+                    var empId = records[i].children[0];
+                    var fName = records[i].children[1];
+                    var tel = records[i].children[5];
+
+                    document.getElementById('show').innerHTML = empId + "\t" + fName + "\t" + tel;
+
+                }
+                
+
+                // var table = document.createElement('table');
+                // table.setAttribute('border', '1');
+
+                // for (var i = 0; i < records.length; i++) {
+                //     var tr = document.createElement('tr');
+                //     var td = document.createElement('td');
+                //     var text = document.createTextNode(records[i].children[0].innerHTML);
+                //     td.appendChild(text);
+                //     tr.appendChild(td);
+                //     var td = document.createElement('td');
+                //     var text = document.createTextNode(records[i].children[1].innerHTML);
+                //     td.appendChild(text);
+                //     tr.appendChild(td);
+                //     var td = document.createElement('td');
+                //     var text = document.createTextNode(records[i].children[5].innerHTML);
+                //     td.appendChild(text);
+                //     tr.appendChild(td);
+
+                //     table.appendChild(tr);
+                // }
+
+                // document.getElementById('show').appendChild(table);
+            }
+        }
+    </script>
+</body>
+
+</html>

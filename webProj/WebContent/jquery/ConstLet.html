@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstLet.html</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // const num1 = 10; {  // let : 변경가능?? // const : 변경불가.고정
+        
+        const num1 = {
+            name: 'Hong',
+            age : 10
+        };
+        const num2 = {
+            name: 'Hwang',
+            age : 15
+        };
+        const num3 = {
+            name: 'Park',
+            age : 20
+        };
+        
+        const numbers = [num1, num2, num3];
+
+        $(numbers).each(function (idx, val) {
+            console.log(idx, val.name, val.age);
+        });
+
+        console.log('==================');
+
+        const names = $(numbers).map(function (a, b){ // 여기도 idx, val 순
+            console.log(a, b);
+            return b.name;
+        });
+
+        console.log(names);
+
+        console.log('==================');
+
+        const ages = $.grep(numbers, function(val, idx){ //grep은 값이 true인것만 출력
+            console.log(val, idx);
+            return val.age == 15;
+        });
+
+        console.log(ages);
+
+    </script>
+
+</head>
+<!--let 뭔지 검색--> 
+
+<body>
+</body>
+
+</html>

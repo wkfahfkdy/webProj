@@ -19,9 +19,14 @@ public class EmpDAO {
 		
 		Employee empl = new Employee();
 		
-		String sql1 = "select employees_seq.nextval from dual";
-		String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id) " 
-				+ "values(?, ?, ?, ?, ?)";
+		String sql1 = "select employees_seq.nextval from dual"; //다음 번호로 +1씩 늘려주는거
+
+		// String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id, DEPARTMENT_ID) " 
+		// 		+ "values(?, ?, ?, ?, ?, 50)";	
+		// first_name, salary 추가 전
+
+		String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id, first_name, salary, DEPARTMENT_ID) " 
+				+ "values(?, ?, ?, ?, ?, ?, ?, 50)";
 		try {
 			int empId = 0;
 			stmt = conn.createStatement();
@@ -36,6 +41,8 @@ public class EmpDAO {
 			psmt.setString(3, emp.getEmail());
 			psmt.setString(4, emp.getHireDate());
 			psmt.setString(5, emp.getJobId());
+			psmt.setString(6, emp.getFirstName());
+			psmt.setInt(7, emp.getSalary());
 			
 			int r = psmt.executeUpdate();
 			System.out.println(r + "건 입력ㅇ");
@@ -46,13 +53,15 @@ public class EmpDAO {
 			empl.setLastName(emp.getLastName());
 			empl.setJobId(emp.getJobId());
 			empl.setHireDate(emp.getHireDate());
+			empl.setFirstName(emp.getFirstName());
+			empl.setSalary(emp.getSalary());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
 		
 		
-		return empl;
+		return empl;	//2021.04.21 여기서 끝 > 내일
 	}
 
 	public void insertEmp(Employee emp) {	//여기서 ajax.html 을 실행시켜서 데이터 입력하면 commit까지 해줌
@@ -103,8 +112,11 @@ public class EmpDAO {
 				emp.setEmployeeId(rs.getInt("employee_id"));
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
+				
 
 				employees.add(emp);
 			}
@@ -151,9 +163,10 @@ public class EmpDAO {
 				emp.setEmployeeId(rs.getInt("employee_id"));
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
-
 				employees.add(emp);
 			}
 		} catch (SQLException e) {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src='../js/jquery-3.6.0.min.js'></script>
+	<style>
+		section#sec1 > h1 {
+			background-color : skyblue;
+		}
+	</style>
+	<script>
+		$(document).ready(function(){	//document가 다운로드되어서 그걸 다 파악한 후에 function 을 해라.
+			// var sec1 = document.getElementById('sec1');
+			sec1 = $('#sec1');
+			console.log(sec1.children().eq(0).html); //eq() >> index값 () 가져오기
+			console.log($('.sec1').children().eq(0).html);
+			
+			// $('#sec1>ul').children().eq(1).css('color', 'red');
+			$('li').eq(0).parent().css('background-color', 'yellow');
+			// parent <-> parents 확연히 다름. 후자는 최상위 parent까지 모두
+		});
+		
+	</script>
+</head>
+
+<body>
+	<h1>Apple</h1>
+	<section id = 'sec1'>
+		<h1>Banana</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>red</li>
+		</ul>
+	</section>
+	<section class = 'sec1'>
+		<h1>cherry</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>red</li>
+		</ul>
+	</section>
+</body>
+</html>
