@@ -20,17 +20,26 @@
                 var doc = xhtp.responseXML;
                 var records = doc.getElementsByTagName('record');
 
-               
-                for (var i; i < records[i].length; i++){
-                    var empId = records[i].children[0];
-                    var fName = records[i].children[1];
-                    var tel = records[i].children[5];
+                
+                // console.log(records[0].childNodes[0]);                               실패
+                <a id = 'af'></a>
 
-                    document.getElementById('show').innerHTML = empId + "\t" + fName + "\t" + tel;
+                for (i = 0; i < 10; i++) {
+                    // console.log(records[i].childNodes[0].innerHTML);
+                    var empId = records[i].childNodes[0].innerHTML;
+                    var fName = records[i].childNodes[1].innerHTML;
+                    var tel = records[i].childNodes[5].innerHTML;
+
+                    af.appendChild(empId);
+                    af.appendChild(fName);
+                    af.appendChild(tel);
 
                 }
-                
+                var show = document.getElementById('show');
+                show.appendChild(af);
 
+                
+                
                 // var table = document.createElement('table');
                 // table.setAttribute('border', '1');
 
