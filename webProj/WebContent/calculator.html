@@ -99,7 +99,7 @@
                     } else if (oper == '%') {
                         dp.innerHTML = parseFloat(firstVal) % parseFloat(lastVal)
                     } 
-                        firstVal = dp.innerHTML;
+                        firstVal = parseFloat(dp.innerHTML).toFixed(8);
                         lastVal = 0;
                         oper = null;   // 아래 return 에서 수정한거. 연산 이어서 가능
                         
