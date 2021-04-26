@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_selec2_9.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            var arr1 = ['서울', '대전', '부산', '전주'];
+            var arr2 = ['한국', '미국',' 일본', '중국'];
+            var obj = {
+                'name' : '정부장',
+                'area' : '서울'
+            }   //객체 리터럴 형식 : {} 사용해서 객체 생성. 
+                //프로퍼티 이름 : 프로퍼티 값 >> 표기 시 해당 프로퍼티가 추가된 객체 생성.
+                //프로퍼티 값이 함수일 경우 = 메서드
+
+            var idxNum = $.inArray('부산', arr1);   // inArray > 인덱스값 반환 >> 부산 3번째니 값 2
+            console.log(idxNum);
+
+            var okArray1 = $.isArray(arr1); //배열 객체면 true
+            var okArray2 = $.isArray(obj);  //배열 객체가 아니면 false
+            console.log(okArray1);
+            console.log(okArray2);
+
+            $.merge(arr2, arr1);    // merge > 두 배열 객체를 하나로 묶는거
+            console.log(arr2);      //['한국', '미국', ... , '서울', '대전', ... ,'전주']
+        });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

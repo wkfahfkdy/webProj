@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam01.html</title>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var saveBtn = document.getElementById('saveBtn');
+            saveBtn.addEventListener('click', saveBtnFnc);
+        })
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>이&nbsp;&nbsp;&nbsp;름 : <input type="text" name='name' id='name'></div>
+        <div>나&nbsp;&nbsp;&nbsp;이 : <input type="text" name='age' id='age'></div>
+        <div>연락처 : <input type="text" name='tel' id='tel'></div>
+        <br>
+        <div>
+            <button id='saveBtn'>저장</button>
+        </div>
+    </div>
+    <hr><br>
+
+    <div id='show'></div>
+    <script>
+        var p1 = {
+            name: 'Hong',
+            age: 20,
+            tel: '010-1111-1111'
+        }
+        var p2 = {
+            name: 'Kim',
+            age: 23,
+            tel: '010-2222-2222'
+        }
+
+        var p3 = {
+            name: 'Choi',
+            age: 28,
+            tel: '010-3333-3333'
+        }
+
+        var persons = [p1, p2, p3];
+
+        var table = document.createElement('table');
+        table.setAttribute('border', '1');
+
+        var tr = document.createElement('tr');
+
+        for (var fie in p1) {
+            var th = document.createElement('th');
+            th.innerHTML = fie;
+            tr.appendChild(th);
+        }
+        table.appendChild(tr);
+
+        for (var person of persons) {
+            var tr1 = document.createElement('tr');
+            for (var field in person) {
+                var td = document.createElement('td');
+                td.innerHTML = person[field];
+                tr1.appendChild(td);
+            }
+            table.appendChild(tr1);
+        }
+
+        var show = document.getElementById('show');
+        show.appendChild(table);
+
+        function saveBtnFnc() {
+            var iName = document.getElementById('name');
+            var iAge = document.getElementById('age');
+            var iTel = document.getElementById('tel');
+
+            var trTag = document.createElement('tr');
+            // name
+            var tdTag = document.createElement('td');
+            tdTag.innerHTML = iName.value;
+            trTag.appendChild(tdTag);
+            // age
+            var tdTag = document.createElement('td');
+            tdTag.innerHTML = iAge.value;
+            trTag.appendChild(tdTag);
+            // tel
+            var tdTag = document.createElement('td');
+            tdTag.innerHTML = iTel.value;
+            trTag.appendChild(tdTag);
+
+            table.appendChild(trTag);
+            
+            console.log(iName.value, iAge.value, iTel.value);
+        }
+    </script>
+</body>
+
+</html>

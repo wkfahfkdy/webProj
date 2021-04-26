@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <p>Value : </p>
+    <form action="">
+        <input type="text" name="name" id="" value='kildong'>
+        <input type="text" name="passwd" id="" value='1234'>
+        <input type="text" name="age" id="" value='10'>
+    </form>
+    <script>
+        $('p').append(
+            $('input').map(function () {
+                return $(this).val();
+            }).get().join(','));    //join() 메서드는 배열의 모든 요소를 연결해 하나의 문자열로 만듭니다.
+
+            var obj = [{area : '부산'},{area : '서울'},{area : '전주'}];
+            
+            $(obj).each(function (i, o) {
+                console.log(i, + ":", o);
+            }) 
+
+            $.each(obj, function (i, o) {
+                console.log(i, o)
+            })
+    </script>
+</body>
+
+</html>

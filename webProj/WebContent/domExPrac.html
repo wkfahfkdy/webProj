@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='show'></div>
+    <script>
+        var p1 = {
+            name: 'Hong',
+            id: 'user1',
+            score: 80,
+            gender: '남',
+            button: '<button>삭제</button>'
+        }
+        var p2 = {
+            name: 'Hwang',
+            id: 'user2',
+            score: 84,
+            gender: '남',
+            button: '<button>삭제</button>'
+        }
+        var p3 = {
+            name: 'Park',
+            id: 'user3',
+            score: 86,
+            gender: '여',
+            button: '<button>삭제</button>'
+        }
+        var p4 = {
+            name: 'Choi',
+            id: 'user4',
+            score: 82,
+            gender: '여',
+            button: '<button>삭제</button>'
+        }
+        var persons = [p1, p2, p3, p4];
+
+        var tbl = document.createElement('table');
+        tbl.setAttribute('border', '1');
+
+        var tr0 = document.createElement('tr');
+        for (fie in p1) {
+            var th0 = document.createElement('th');
+            th0.innerHTML = fie;
+            tr0.appendChild(th0);
+        }
+        tbl.appendChild(tr0);
+
+        for (var people of persons){
+            var tr1 = document.createElement('tr');
+            for (filed in people) {
+                var td1 = document.createElement('td');
+                td1.innerHTML = people[filed];
+                tr1.appendChild(td1);
+            }
+            tbl.appendChild(tr1);
+        }
+
+        var show = document.getElementById('show');
+        show.appendChild(tbl);
+
+        var btns = document.querySelectorAll('tr>td>button');   //이거 처음에는 f12-console 에는 안나왔다. 그 이유로는 위의 show 보다 위에 위치했었기 때문이다. ***위치에 주의하기
+        for (var i = 0; i < btns.length; i++){
+            btns[i].onclick = function() {
+                var delVal = (this.parentNode.parentNode.childNodes[0].firstChild.nodeValue);
+                delFunc(delVal);
+                this.parentNode.parentNode.remove();
+            }
+        }
+        console.log(btns);
+
+        function delFunc(val) {
+            console.log(`${val} 삭제`)
+        }
+    </script>
+</body>
+
+</html>

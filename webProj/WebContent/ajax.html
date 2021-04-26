@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="ajax.html" content="width=device-width, initial-scale=1.0">
+    <title>ajax.html</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var frm = document.getElementById('frm');
+            frm.addEventListener('submit', function (e) {
+                e.preventDefault(); //서브밋 기능을 막아 놓음.
+                console.log(e);
+                var ln = document.getElementById('last_name').value;
+                var em = document.getElementById('email').value;
+                var hd = document.getElementById('hire_date').value;
+                var ji = document.getElementById('job_id').value;
+                var fn = document.getElementById('first_name').value;
+                var sa = document.getElementById('salary').value;
+
+                var data = 'first_name=' + fn + '&last_name=' + ln + '&email=' + em + '&hire_date=' +
+                    hd + '&job_id=' + ji + '&salary=' + sa;
+                var xhtp = new XMLHttpRequest();
+                xhtp.open('post', 'empList.do');
+                xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhtp.send(data);
+
+                xhtp.onreadystatechange = function () {
+                    if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        console.log(xhtp.responseText);
+                        var obj = JSON.parse(xhtp.responseText);
+                        console.log(obj.employee_id, obj.first_name, obj.last_name, obj.email, obj
+                            .job_id, obj.hire_date, obj.salary);
+                    }
+                }
+            })
+        })
+
+        function deleteRow() {
+            var delVal = this.parentNode.parentNode.childNodes[0].firstChild.nodeValue;
+            delFunc(delVal);
+            this.parentNode.parentNode.remove();
+        }
+
+        function delFunc(val) {
+            console.log(`${val} 삭제됨`)
+        }
+
+        function modifyFunc() { //이름(first_name) 클릭
+            var fnVal = this.innerHTML;
+            var lnVal = this.parentNode.childNodes[3].innerHTML;
+            var emVal = this.parentNode.childNodes[5].innerHTML;
+            var hdVal = this.parentNode.childNodes[4].innerHTML;
+            var jiVal = this.parentNode.childNodes[1].innerHTML;
+            var saVal = this.parentNode.childNodes[6].innerHTML;
+            console.log(fnVal, lnVal, emVal, hdVal, jiVal, saVal);
+
+            document.getElementById('first_name').value = fnVal;
+            document.getElementById('last_name').value = lnVal;
+            document.getElementById('email').value = emVal;
+            document.getElementById('hire_date').value = hdVal;
+            document.getElementById('job_id').value = jiVal;
+            document.getElementById('salary').value = saVal;
+        }
+    </script>
+    <style>
+        #tbl {
+            border-collapse: collapse;
+        }
+
+        #thbo {
+            border-bottom: 2px solid black;
+        }
+
+        #tbl>tr:hover {
+            cursor: pointer;
+            background-color: skyblue;
+        }
+
+        #tbl>#tabtit {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="frm" action="empList.do" method="POST">
+        <table>
+            <tr>
+                <td width=30>FirstName</td>
+                <td width=150><input type="text" name="first_name" id="first_name"></td>
+            </tr>
+            <tr>
+                <td>LastName</td>
+                <td><input type="text" name="last_name" id="last_name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email" id="email"></td>
+            </tr>
+            <tr>
+                <td>HireDate</td>
+                <td><input type="date" name="hire_date" id="hire_date"></td>
+            </tr>
+            <tr>
+                <td>JobId</td>
+                <td><input type="text" name="job_id" id="job_id"></td>
+            </tr>
+            <tr>
+                <td>Salary</td>
+                <td><input type="text" name="salary" id="salary"></td>
+            </tr>
+            <tr>
+                <td width=90 height=40 align="left"><button id='modifyBtn'>수정</button></td>
+                <td width=90 align="right"><input type="submit" value="저장"> <input type="reset" value="취소"></td>
+            </tr>
+        </table>
+
+
+
+    </form>
+    <br>
+    <hr><br>
+    <div id="show"></div>
+    <script>
+        /*
+        //동기-비동기 >> 동기는 순차적으로 느적느적 // 비동기는 시간 걸리는건 걸리는대로 나중에 출력
+        //직렬-병렬 느낌인거같음
+        console.log('1');
+        setTimeout(function () {
+            console.log('2')        
+        }, 1000);
+        console.log('3'); 
+        */
+
+        var xhtp = new XMLHttpRequest();
+        // readyState : 
+        // 1 => connection.         2 => request received.
+        // 3 => processing request  4 => request finished response ready
+
+        var title = {
+            employeeId: '사원번호',
+            jobId: '직무번호',
+            firstName: '이름',
+            lastName: '성',
+            hireDate: '고용일',
+            email: '이메일',
+            salary: '급여'
+        }
+
+        xhtp.onreadystatechange = function () {
+            // console.log(xhtp.readyState, xhtp.status, xhtp.responseText);
+            if (xhtp.readyState == 4 && xhtp.status ==
+                200) { // 요청을 보냈을때 답이 4번이고 + 200 = ok >> 404 = not found 같은 코드
+                var show = document.getElementById('show');
+                var obj = JSON.parse(xhtp.responseText);
+                console.log(obj);
+                // table tr td => div.appendChild();
+                var table = document.createElement('table');
+                table.setAttribute('border', '1');
+                table.setAttribute('id', 'tbl');
+
+                /* 이거하면 나오는데 생긴게 맘에 안듬. 다르게 만들거
+                var tr = document.createElement('tr');
+                for (var fie in obj[0]) { //제목 붙히기 그냥 obj 는 배열이다. 왜 [0]인지는 그냥 배열의 첫번째값에서 따온다는거
+                    var th0 = document.createElement('th');
+                    th0.innerHTML = fie;
+                    tr.appendChild(th0);
+                }
+                table.appendChild(tr);
+                */
+
+                //아래대로하니까 문제점 : 위에 title 내용 좌측의 id,name 에 따라서 지정되는게 아니라 단순히 적은 순서대로 들어감... id,name을 적는게 아니라 a,b,c,d를 적어도 들어갈거같음
+                var tr0 = document.createElement('tr');
+                for (var fie in title) {
+                    var th0 = document.createElement('th');
+                    var text = document.createTextNode(title[fie]);
+                    th0.appendChild(text);
+                    tr0.appendChild(th0);
+
+                    th0.setAttribute('id', 'thbo');
+
+                }
+                table.appendChild(tr0);
+                tr0.setAttribute('id', 'tabtit')
+
+
+                // 배열의 갯수만큼 tr 생성 (obj 개수만큼 반복 >> for of)
+                for (var data of obj) {
+                    var tr = document.createElement('tr');
+                    tr.setAttribute('id', data.first_name);
+                    // field 수만큼 반복해서 td 생성 (field 개수만큼 반복 >> for in)
+                    // 이름(first_name) 클릭
+                    for (var field in data) {
+                        if (field == 'fName') {
+                            var td = document.createElement('td');
+                            td.onclick = modifyFunc;
+                            var text = document.createTextNode(data[field]);
+
+                            td.appendChild(text);
+                            tr.appendChild(td);
+
+                        } else {
+                            var td = document.createElement('td');
+                            var text = document.createTextNode(data[field]);
+
+                            td.appendChild(text);
+                            tr.appendChild(td);
+                        }
+                    }
+                    table.appendChild(tr);
+
+                    var btn = document.createElement('button');
+                    btn.innerHTML = '삭제'
+                    var tdTag = document.createElement('td');
+                    tdTag.appendChild(btn);
+                    tr.appendChild(tdTag);
+                    table.appendChild(tr);
+
+                }
+
+                // div#show 의 자식으로 table을 달아준다
+                document.getElementById('show').appendChild(table);
+
+                var btns = document.querySelectorAll('tr>td>button');
+                for (var i = 0; i < btns.length; i++) {
+                    btns[i].onclick = deleteRow;
+                }
+                console.log(btns);
+            }
+        }
+        xhtp.open('get', 'empList.do?dept=50'); // = ('get', 'http://localhost/webProj/empList.do?dept=50')
+        xhtp.send();
+    </script>
+</body>
+
+</html>

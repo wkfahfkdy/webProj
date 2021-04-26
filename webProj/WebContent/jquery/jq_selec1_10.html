@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_selec1_10</title>
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <script>
+        $(function(){
+            var style_1 = {
+                "background-color":"#0ff",
+                "border":"2px solid #f00"
+            }
+            var style_2 = {
+                "background-color":"#ff0",
+                "border":"2px dashed #f00"
+            }
+
+            $(".txt").prev().css(style_1);
+
+            $(".txt + p").css(style_2);
+
+            $(".txt").next().next().css(style_2);
+
+            $('.txt').css({'background-color': 'yellow', 'color' : 'red', 'border' : '1px dotted blue'}).att('id','txt1');
+        })
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <h1>인접 관계 선택자</h1>
+        <p>내용1</p>
+        <p class="txt">내용2</p>
+        <p>내용3</p>
+        <p>내용4</p>
+    </div>
+</body>
+</html>
