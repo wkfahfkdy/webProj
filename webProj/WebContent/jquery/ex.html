@@ -6,11 +6,15 @@
 	<title>ex.html</title>
 	<script src='../js/jquery-3.6.0.min.js'></script>
 	<script>
-		function plusBtnFnc() {
-			$('#plus').click(function () {
-				console.log(('[name=plus]').is(':selected').val());
-				// $('[name=minus]').append(('[name=plus]').is(':selected').val());
-			}		
+		$(document).ready(function (){
+			$('#plus').click(function() {
+				// console.log($('select[name=plus]').val());
+				$('select[name=minus]').append($('select[name=plus] option:selected'));
+			})
+			$('#minus').click(function() {
+				$('select[name=plus]').append($('select[name=minus] option:selected'));
+			})		
+		})
 	</script>
 </head>
 
