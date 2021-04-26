@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map2.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+    	$(document).ready(function () {
+    		$.ajax({
+    			url: '../MOCK_DATA.json',
+    			dataType: 'json',
+    			success: function(resolve) {
+    				let mapData = $(resolve).filter(function(i, o) {
+    					return i < 10;
+    				}).map(function(i, o) {
+    					let trTag = $('<tr />');
+    					trTag.append(
+    						$('<td />').html(o.id),
+    						$('<td />').html(o.first_name),
+    						$('<td />').html(o.last_name),
+    						$('<td />').html(o.email)
+    					);
+    					return trTag;
+    				});
+    				console.log(mapData);
+    				$('#tbl').append(mapData.get()); // 그냥 mapData 하니까 안나옴. .get()을 붙히니까 나옴. 왜지
+    												 // mapData가 배열이라 안되고 get이 element 요소로 변환해주는 것이라 된다는거 같다
+       			},
+    			error: function(reject) {
+    				console.error(reject);
+    			}
+    		});    		
+    	});
+    </script>
+</head>
+<body>
+    <table id = 'tbl'></table>
+</body>
+</html>

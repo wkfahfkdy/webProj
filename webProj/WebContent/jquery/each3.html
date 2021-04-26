@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>each3.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '../MOCK_DATA.json',
+                dataType: 'json', // 안해도 자동으로 인식해줌
+                success: successCallFunc, // 어자피 success 해야 하니까 이 안에다가 때려박는듯
+                error: errorCallFnc
+            }); // XMLHttpRequest(); xhtp.resultText
+        });
+
+        function successCallFunc(resolve) {
+            console.log(resolve);
+            // let contents = '';
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(resolve, function (i, o) {
+                // contents += '<p>' + o.id + '</p>';
+                let trTag = $('<tr />'); // row 생성
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((evnt) => {   
+                    console.log($(this), evnt)
+                    // function(event) 로 하는거랑 (event) => 하는거랑 $(this)의 결과가 다름
+                    // $(this) >> function : event 대상, arrow fnc : object 대상
+                    evnt.currentTarget.parentNode.parentNode.remove();
+                });
+                trTag.append(                    
+                    $('<td />').html(o.id),
+                    $('<td />').html(o.first_name),
+                    $('<td />').html(o.last_name),
+                    $('<td />').html(o.email),
+                    $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            // console.log(contents);
+            // $('#show').html(contents) // <p>1</p><p>2</p> .... <p>20</p> 
+            $('#show').append(tbl); 
+        }
+
+        function clickFnc() {
+            alert($(this).attr('id'));
+        }
+
+        function mouseoverFnc() {
+            $(this).css('background-color', 'yellow');
+        }
+
+        function mouseoutFnc() {
+            $(this).css('background-color', '');
+        }
+
+        function errorCallFnc(reject) {
+            console.log(reject);
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

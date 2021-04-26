@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>each2.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <style>
+        span {
+            color : blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .ex{
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    click this <span>색 변경</span>
+    <ul>
+        <li class = 'ex'>Apple</li>
+        <li>Banana</li>
+        <li>Cherry</li>
+    </ul>
+
+    click this <span>색 변경</span>
+
+    <script>
+        $('span').click(function () {
+            $('li').each(function () {
+                $(this).toggleClass('ex');
+            })
+        })
+    </script>
+</body>
+</html>
