@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_selec3_3.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		$('#p1').addClass('aqua');					// 선택한 요소에 Class 생성
+		$('#p2').removeClass('red');				// 선택한 요소에서 지정한 Class 삭제
+		$('#p3').toggleClass('green');				// Class 없으면 생성
+		$('#p4').toggleClass('green');				// 있으면 삭제
+		$('#p6').text($('#p5').hasClass('yellow'));	// 선택한 요소에 지정한 클래스 있으면 true, 없으면 false
+	})
+</script>
+<style>
+	.aqua { background-color: #0ff; }
+	.red { background-color: #f00; }
+	.green { background-color: #0f0; }
+	.yellow { background-color: #ff0; }
+</style>
+</head>
+<body>
+	<p id='p1'>내용1</p>
+	<p id='p2' class='red'>내용2</p>
+	<p id='p3'>내용3</p>
+	<p id='p4' class='green'>내용4</p>
+	<p id='p5' class='yellow'>내용5</p>
+	<p id='p6'></p>
+</body>
+</html>

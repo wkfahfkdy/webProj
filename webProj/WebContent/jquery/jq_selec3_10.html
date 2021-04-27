@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_selec3_10.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $('<li>appendTo</li>').appendTo('#listZone');
+        // 적을 내용(<li>~</li>)을 뒤에(appendTo) 담을 곳에
+        $('#listZone').prepend('<li>prepend</li>');
+        // 담을 곳 앞에(prepend) 적을 내용(<li>~</li>)
+    });
+</script>
+</head>
+<body>
+    <ul id='listZone'>
+        <li>리스트</li>
+    </ul>
+</body>
+</html>

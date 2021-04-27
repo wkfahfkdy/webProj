@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>jq_selec3_1.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+           // let hello =  $('p').html('<a href="#">hello</a>'); // 하이퍼링크 걸림
+           // hello =  $('p').text('<a href="#">hello</a>'); // text는 말 그대로 text로만 나옴. 태그/하이퍼링크 안걸림
+           let hello = $('p').text();
+           let id = $('input[type="text"]').attr('name'); // 내가 찾는 방법이랑 다른 name 가져오기
+           console.log(hello);
+           console.log(id);
+        })
+        
+        $(function () {
+        	var result_1 = $('#sec_1').html();
+        	console.log(result_1);
+        	$('#sec_1 p').html('<a href=\'#\'>Text1</a>');
+        
+        	var result_2 = $('#sec_2').text();
+        	console.log(result_2);
+        	$('#sec_2 h2').text('text()');
+        })
+    </script>
+</head>
+<body>
+    <p><span>abcd</span></p>
+    <input type='text' name='id' value='hi'>
+    
+    <h1>
+    	<strong>객체 조작 및 생성</strong>
+    </h1>
+    <section id='sec_1'>
+    	<h2>
+    		<em>html()</em>
+    	</h2>
+    	<p>내용1</p>
+    </section>
+    <section id='sec_2'>
+    	<h2>
+    		<em>텍스트()</em>
+    	</h2>
+    	<p>내용2</p>
+    </section>
+</body>
+</html>

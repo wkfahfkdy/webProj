@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_selec3_11.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+    $(function() {
+        var copyObj = $('.box1').children().clone();
+
+        $('.box2').remove();
+
+        $('.box3').empty();
+
+        $('.box3').append(copyObj);
+    });
+</script>
+</head>
+<body>
+    <div class='box1'>
+        <p>내용1</p>
+        <p>내용2</p>
+    </div>
+    <div class='box2'>
+        <p>내용1</p>
+        <p>내용2</p>
+    </div>
+    <div class='box3'>
+        <p>내용1</p>
+        <p>내용2</p>
+    </div>
+</body>
+</html>

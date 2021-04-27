@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jq_event1_2.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('.btn1').click(function () {
+                $('p:contains(내용1)').html('hi');
+                $('.btn1').parent().next().css({
+                    'color': '#f00'
+                });
+                // btn1 의 부모Class 의 다음 = <p>내용1</p> 의 색을 #f00 로 바꾸기
+            });
+
+            $('.btn2').on({
+                'click': function () {
+                    $('.btn2').parent().next().css({
+                        'color': 'red'
+                    }).attr('id', 'content2').addClass('content');
+                }
+            });
+
+            $('p:eq(1)').on({
+                mouseover: function () {
+                    $(this).css({
+                        'background-color': 'aqua',
+                        'font-size': '30px'
+                    })
+                },
+                'mouseout': function () {
+                    $(this).css({
+                        'background-color': '',
+                        'font-size': '15px'
+                    })
+                }
+                //mouseover 에 '' 없어도 되네??
+            });
+
+            // $('.btn1').click(); // 이거때문에 위에거가 자동 실행 = 단독 이벤트 등록 메서드
+            // $(this).trigger('mouseover'); // = trriger() 메서드로 강제 이벤트 발생 << 근데 없어도 되는데?
+
+            $('#btn3').click(function () {
+                let fname = $('input[type=text]').val();
+                let age = $('input[type=number]').val();
+                let btn = $('<button />').html('Del');
+                let sp = $('<span />').html(fname + ', ' + age);
+                	/* sp 를 안만들고 아래쪽에 append($('<span />~~~~~')) 를 적었을 때는 작동하지 않았다
+                	   아마도 무언가를 작동시키고자 할때는 변수 선언을 하고나서 해야하는 듯하다
+                	   위에 <span />을 즉석으로 만들었다고 해서 그거를 따올 수는 없는것같다
+                	   만약 지금 아래 sp.on 대신 $('div').on 으로 바꾼다면 안될 것이다.
+                       왜냐하면 위에 말한 것처럼 즉석에서 만든 것은 아래에서 바로 못 가져온다는 것이기 때문 
+                    */
+
+                btn.click(function () {
+                    $(this).parent().remove();
+                });
+
+                $('p#show').append(
+                    $('<div />').append(sp)
+                    .append(btn)
+                );
+                
+                sp.on({
+                    mouseover: function() {
+                        $(this).css({
+                            'background-color': 'skyblue'
+                        })
+                    },
+                    mouseout: function() {
+                        $(this).css({
+                            'background-color': 'pink'
+                        })
+                    }
+                }); // end - span.on
+                
+            }); // end - #btn3.click
+
+        }); // end - script function
+    </script>
+    <style>
+        .content {
+            background-color: yellow;
+        }
+
+        span {
+            display: inline-block;
+            width: 50vw;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        <button class='btn1'>버튼1</button>
+    </p>
+    <p>내용1</p>
+    <p>
+        <button class='btn2'>버튼2</button>
+    </p>
+    <p>내용2</p>
+
+    <input type='text' name='firstName' value='kildong'><br>
+    <input type='number' name='age' value=10>
+    <button id='btn3'>추가</button>
+    <p id='show'></p>
+
+</body>
+
+</html>

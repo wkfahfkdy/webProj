@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>selector_test_1.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#myList li').not(':first').css({'background-color':'yellow'});
+            //not 이 css 보다 앞에 와야한다. 뒤에가니까 적용x
+            //not('#myList li:first')로 했었는데 책보니까 not(':first') 로 줄여서 쓴다
+        });
+    </script>
+</head>
+<body>
+    <ul id='myList'>
+        <li>내용1</li>
+        <li>내용2</li>
+        <li>내용3</li>
+        <li>내용4</li>
+    </ul>
+</body>
+</html>
