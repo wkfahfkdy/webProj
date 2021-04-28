@@ -3,6 +3,7 @@ package ajax;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -29,8 +30,32 @@ public class MemberSevlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 조회작업
+		Connection conn = DBCon.getConnect();
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select * from member";
+		// 조회 sql 작성
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		// 조회 결과를 json 형식으로 작성
+		// [{"id":1, "name":"hong", "age": 20},
+		// [{"id":1, "name":"hong", "age": 20},
+		// [{"id":1, "name":"hong", "age": 20},]
+		
+		//결과를 response.getWriter().print(); 로 출력
+		
 		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().print("<h2>정상 조회</h2>");
+		response.getWriter().print("");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
