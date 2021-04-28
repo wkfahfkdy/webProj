@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_event2_4.html</title>
+    
+    <style>
+        #show {
+            background-color: yellow;
+            width: 300px;
+            height: 200px;
+        }
+        .item {
+            width: 50px;
+            height: 30px;
+            display: inline-block;
+            background-color: aqua;
+            border: 1px dotted greenyellow;
+        }
+    </style>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $('#name').keypress(function (e) {
+            	if(e.keyCode == 13) {			// keyCode == 13 >> 엔터일 때
+                	let inputVal = $(this).val();                	
+                	console.log(inputVal);
+                	$('#show').append($('<div />').html(inputVal).addClass('item'));
+                	$(this).val('');
+            	}
+            });
+            // 제거
+            $('#eman').bind('keydown', function(e) {
+            	if(e.keyCode == 13) {
+            		let iword = $(this).val();
+            		// $('#show div:contains('+iword+')').remove();
+            		let contents = $('#show').contents(); // div,div,div
+            		for(let i=0; i<contents.length; i++){
+            			if(contents[i].innerHTML == iword) {
+            				contents[i].remove();
+            			}
+            		}
+            		$(this).val('');
+            	}
+            })
+            $('#name').focus(); //안눌러도 기본적으로 클릭한것처럼 깜빡이고 있음
+        })
+    </script>
+
+</head>
+<body>
+    <input type = 'text' name= 'name' id='name'>
+    <div id = 'show'></div>
+    <input type = 'text' name= 'eman' id='eman'>
+</body>
+</html>

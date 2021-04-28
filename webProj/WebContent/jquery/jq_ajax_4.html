@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_4.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$.ajax({
+			url : '../ajax.html',
+			type : 'get', // 또는 post
+			data : 'p1=hello&p2=nice', // p : parameter
+			dataType : 'html',
+			success : function(resolve) {
+				console.log(resolve);
+			},
+			error : function(reject) {
+				window.alert(reject.statusText);
+				console.error(`에러코드: ${reject.status}, 에러메시지: ${reject.statusText}`);
+			}
+		});
+	})
+</script>
+</head>
+<body>
+	<form action='memberServlet.do' method='post'>		
+		<!-- 여기서 /jquery/memberServlet.do 가 아니라 memberServlet.do 인 이유는 
+		MemberSevlet.java에서 가상주소?로 jquery 안에 넣어놨기 때문에 사실상 같은 상위폴더 하에 있다고 생각해서 생략 가능해짐-->
+		ID : <input type='number' name='m_id' id='m_id' value=1 /><br>
+		이름 : <input type='text' name='m_name' id='m_name' value='hong' /><br>
+		나이 : <input type='number' name='m_age' id='m_age' value=20 /><br>
+		<input type='submit' value='저장'>
+	</form>
+	<div id='show'></div>
+</body>
+</html>

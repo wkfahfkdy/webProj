@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_3.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$.post('../ajax.html', function(data) { //get 말고 post도 된다. .json이라서 된거같다
+			console.log(data);
+		}, 'html');
+		
+	})
+</script>
+</head>
+<body>
+	<div id='show'></div>
+</body>
+</html>
