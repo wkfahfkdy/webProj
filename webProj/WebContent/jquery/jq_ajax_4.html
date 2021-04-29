@@ -1,30 +1,114 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>jq_ajax_4.html</title>
-<script src="../js/jquery-3.6.0.min.js"></script>
 
-<script>
-	$(document).ready(function() {
-		$.ajax({
-			url : '../ajax.html',
-			type : 'get', // 또는 post
-			data : 'p1=hello&p2=nice', // p : parameter
-			dataType : 'html',
-			success : function(resolve) {
-				console.log(resolve);
-			},
-			error : function(reject) {
-				window.alert(reject.statusText);
-				console.error(`에러코드: ${reject.status}, 에러메시지: ${reject.statusText}`);
+<head>
+	<meta charset="UTF-8">
+	<title>jq_ajax_4.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// 회원 리스트 보여주기
+			$.ajax({
+				url: 'memberServlet.do',
+				type: 'get', // 또는 post
+				// data : 'p1=hello&p2=nice', // p : parameter
+				dataType: 'json',
+				success: showList,
+				error: function (reject) {
+					window.alert(reject.statusText);
+					console
+						.error(`에러코드: ${reject.status}, 에러메시지: ${reject.statusText}`);
+				}
+			});
+
+			// 한건 입력 작업 ajax. 아래 body form 말고 새로이
+			$('#frm').on('submit', function (e) {
+				e.preventDefault(); // submit 기능 취소 > 서블릿페이지 이동(x)
+				$.ajax({
+					url: $('#frm').attr('action'), // = 'memberServlet.do',
+					data: 'm_id=' +
+						$('#m_id').val() + // key=val*key2=val2&...
+						'&m_name=' +
+						$('#m_name').val() +
+						'&m_age=' +
+						$('#m_age').val(),
+					dataType: 'json',
+					type: 'post',
+					success: createRow,
+					error: function (err) {
+						console.log(err);
+					}
+				}); // end- ajax
+			}); // end - submit function
+		})
+
+		function showList(resolve) {
+			console.log(resolve);
+			// 아이디  이름  나이	< 모양으로 테이블만들기
+			//   1  hong  20		(내가 짠거)
+			let $table = $('<table id="tbl" />').attr('border', '1');
+			let tr = $('<tr />');
+			for (var field in resolve[0]) {
+				let th = $('<th />').html(field);
+				tr.append(th);
 			}
-		});
-	})
-</script>
+			$($table).append(tr);
+
+			for (let i = 0; i < resolve.length; i++) {
+				console.log(resolve[i]);
+				let tr = $('<tr />');
+				let delBtn = $('<button />').html('삭제');
+				delBtn.click(delBtnFnc);
+				tr.append($('<td />').html(resolve[i].Id), $('<td />').html(
+					resolve[i].Name), $('<td />').html(resolve[i].Age), $('<td />').append(delBtn));
+				$($table).append(tr);
+			}
+
+			$('#show').append($table);
+		}
+
+		function createRow(data) {
+			console.log(data);
+			// 신규 입력 데이터 화면에 추가로 보여주기
+			let delBtn = $('<button />').html('삭제');
+			delBtn.click(delBtnFnc);
+			
+			let $tr = $('<tr />').append(
+					$('<td />').html(data.id),
+					$('<td />').html(data.name),
+					$('<td />').html(data.age),
+					$('<td />').append(delBtn)
+					);
+			
+			$('#tbl').append($tr);
+		}
+		
+		function delBtnFnc() {
+			// ajax 호출
+			console.log(this) // this => button
+			let id = $(this).parent().parent().children().eq(0).html();
+			let delTr = $(this).parent().parent();
+			// db에서 삭제
+			$.ajax({
+				url: '../MemberDelServlet',
+				data: 'mid=' + id,
+				success: function() {
+					// 화면에서 삭제
+					delTr.remove();
+					console.log('삭제 성공')
+				},
+				error: function(err) {
+					console.log(err);
+				}				
+			});
+			
+		}
+	</script>
 </head>
+
 <body>
-	<form action='memberServlet.do' method='post'>		
+	<form id='frm' action='memberServlet.do' method='post'>
 		<!-- 여기서 /jquery/memberServlet.do 가 아니라 memberServlet.do 인 이유는 
 		MemberSevlet.java에서 가상주소?로 jquery 안에 넣어놨기 때문에 사실상 같은 상위폴더 하에 있다고 생각해서 생략 가능해짐-->
 		ID : <input type='number' name='m_id' id='m_id' value=1 /><br>
@@ -34,4 +118,5 @@
 	</form>
 	<div id='show'></div>
 </body>
+
 </html>
