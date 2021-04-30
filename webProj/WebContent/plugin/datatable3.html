@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>plugin/datatable3.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script>
+        var dataSet = [];
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '../emplDemoServlet2',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    for (let row of data) {
+                        dataSet.push(row);
+
+                    }
+                    // datatable 호출
+                    $('#example').DataTable({
+                        data: dataSet,
+                        columns: [{ title: "사원번호" }, //
+                            { title: "이름" }, //
+                            { title: "이메일" }, //
+                            { title: "연락처" }, //
+                            { title: "입사일자" }, //
+                            { title: "급여" } //
+                        ]
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        });
+    </script>
+</head>
+
+<body>
+	<table id="example" class="display" width="100%"></table>
+</body>
+
+</html>

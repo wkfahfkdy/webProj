@@ -1,0 +1,52 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <title>googleChart.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var aryData = [
+            	['부서', '사원 수 비율']	// 타이틀인데 이거 없으니까 오류나더라. 근데 보이지도 않음
+            ];
+            
+            $.ajax({
+            	url: '../empByDeptServlet',
+            	dataType: 'json',
+            	success: function(data) {
+            		// [[], [], [], ...]
+            		for(let row of data) {
+            			aryData.push(row);
+            		}
+            		
+            		var data = google.visualization.arrayToDataTable(aryData);
+
+                    var options = {
+                        title: '부서별 사원 수',
+                        // pieHole: 0.99  // 이거 추가하면 도넛형으로 바뀜
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+            	},
+            	error: function(err) {
+            		console.log(err);
+            	}
+            });
+            
+        }
+    </script>
+</head>
+
+<body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+</body>
+
+</html>

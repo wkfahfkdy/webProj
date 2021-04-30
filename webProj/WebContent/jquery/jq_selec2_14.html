@@ -16,6 +16,10 @@
                 console.log(idx);
                 return idx % 2 == 0;
             }).css({'background-color' : '#0f0'});
+
+            $('#outer_wrap div').filter(function(idx){
+                console.log(idx);
+            });
         })
     </script>
 </head>
@@ -34,6 +38,11 @@
             <p>index 2</p>
             <p>index 3</p>
         </section>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
     </div>
 </body>
 </html>

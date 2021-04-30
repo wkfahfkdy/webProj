@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plugin/datatable4.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "../emplDemoServlet"
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>사원번호</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>연락처</th>
+                <th>입사일자</th>
+                <th>급여</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>사원번호</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>연락처</th>
+                <th>입사일자</th>
+                <th>급여</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>

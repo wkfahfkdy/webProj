@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmpDAO {
 	Connection conn;
@@ -196,5 +198,105 @@ public class EmpDAO {
 
 		}
 		return employees;
+	}
+	
+	//empl_demo
+	public List<Employee> getEmployeeList() {
+		// 사원정보 가지고 오는 처리
+		String sql = "select * from empl_demo order by employee_id";
+		conn = DBCon.getConnect();
+		List<Employee> employees = new ArrayList<Employee>();
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				Employee emp = new Employee();
+				emp.setEmployeeId(rs.getInt("employee_id"));
+				emp.setFirstName(rs.getString("first_name"));
+				emp.setLastName(rs.getString("last_name"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
+				emp.setEmail(rs.getString("email"));
+				emp.setSalary(rs.getInt("salary"));
+				emp.setPhone_number(rs.getString("phone_number"));
+				
+				employees.add(emp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return employees;
+	}	// getEmployeeList()
+	
+	public Map<String, Integer> getEmployeeByDept() {
+		// 부서명, 사원수
+		Map<String, Integer> map = new HashMap<>();
+//		map.put("부서", 20);  >> map 예시
+		
+		String sql = "select d.department_name, count(1)\r\n" // 지우니까 오류난다고함
+				+ "from empl_demo e, departments d\r\n"	//
+				+ "where e.department_id = d.department_id\r\n"	//
+				+ "group by d.department_name";
+		conn = DBCon.getConnect();
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				map.put(rs.getString(1), rs.getInt(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		
+		return map;
 	}
 }
