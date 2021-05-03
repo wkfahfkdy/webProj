@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import plugin.ScheduleDelServlet;
+
 public class EmpDAO {
 	Connection conn;
 	Statement stmt;
@@ -298,5 +300,97 @@ public class EmpDAO {
 		
 		
 		return map;
+	}
+	
+	// 스케줄 정보 가져오는 메소드
+	public List<ScheduleVO> getScheduleList() {
+		
+		String sql = "select * from schedule";
+		List<ScheduleVO> list = new ArrayList<>();
+		conn = DBCon.getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setTitle(rs.getString("title"));
+				vo.setStartDay(rs.getString("start_day"));
+				vo.setEndDay(rs.getString("end_day"));
+				
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return list;
+	}
+	
+	// 달력 입력
+	public void insertSchedule(ScheduleVO vo) {
+		
+		conn = DBCon.getConnect();
+		String sql = "insert into schedule values(?,?,?)";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			psmt.setString(2, vo.getStartDay());
+			psmt.setString(3, vo.getEndDay());
+			
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 입력ㅇ");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+	}
+	
+	public void deleteSchedule(ScheduleVO vo) {
+		
+		conn = DBCon.getConnect();
+		String sql = "delete from schedule where title = ?";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+	
+
+	private void close() {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 	}
 }
