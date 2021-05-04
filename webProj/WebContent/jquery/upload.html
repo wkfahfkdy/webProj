@@ -1,16 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>jquery/upload.html</title>
-<script src="../js/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+	<title>jquery/upload.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			//db 데이터를 화면 출력 <div id='show'><table></table></div>
+			$.ajax({
+				url: '../getFileListServelet',
+				dataType: 'json', // json -> object
+				success: function (result) {
+					// table로 리스트 출력
+					let tbl = $('<table />');
+					tbl.attr('border', '1');
+					let tr = $('<tr />');
+
+					for (var fie in result[0]) {
+						let th = $('<th />');
+						th.html(fie);
+						tr.append(th);
+					}
+					tbl.append(tr);
+
+					for (var i = 0; i < result.length; i++) {
+						console.log(result[i]);
+						let tr = $('<tr />');
+						tr.append(
+							$('<td />').append(result[i].fileName),
+							$('<td />').append(result[i].author),
+							$('<td />').append(result[i].num),
+							$('<td />').append(result[i].title),
+							$('<td />').append(result[i].day)
+						)
+						tbl.append(tr);
+					}
+					$('#show').append(tbl);
+				},
+				error: function (err) {
+					console.log(err);
+				}
+			});
+
+			// 파일 선택하면 이미지 나오도록
+			$('#filename').change(function () { // 파일명 변경될 때 실행되ㄹ 기능?? 파일선택 안누르고 파일첨부 쪽 눌러도 눌려지는 기능??
+				for (let file of this.files) {
+					$('#img').attr('src', URL.createObjectURL(file));
+				}
+			});
+
+			// 전송 누를 시
+			$('#frm').submit(function (e) {
+				e.preventDefault();
+				let frm = document.getElementById('frm');
+				let data = new FormData(frm);
+				for (let k of data.entries()) {
+					console.log(k);
+				}
+
+				// 비동기 호출 - 파일 업로드 서블릿
+				$.ajax({
+					contentType: false,
+					processData: false,
+					url: $('#frm').attr('action'),
+					type: 'post',
+					dataType: 'json',
+					data: data,
+					success: function (result) {
+						console.log(result);
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			});
+			
+		});
+	</script>
+	<style>
+		#img {
+			height: 220px;
+			width: 180px;
+		}
+	</style>
 </head>
+
 <body>
 	<h1>Ajax 파일 업로드</h1>
-	<form id="frm" action="uploadServlet" method="post" enctype="multipart/form-data">
-		이름:<input type="text" name="name" value="홍길동">
-		파일:<input type="file" name="file">
-		<input type="submit">
+	<form id="frm" action="../fileUploadServlet" method="post" enctype="multipart/form-data">
+		<table border="1">
+			<tr>
+				<td><label for="num">번호</label></td>
+				<td><input type="text" name="num" id="num"></td>
+				<td rowspan="4"><img sre="" alt="선택한 파일." id='img'></td>
+			</tr>
+			<tr>
+				<td><label for="author">저자</label></td>
+				<td><input type="text" name="author" id="author"></td>
+			</tr>
+			<tr>
+				<td><label for="title">제목</label></td>
+				<td><input type="text" name="title" id="title"></td>
+			</tr>
+			<tr>
+				<td><label for="filename">첨부파일</label></td>
+				<td><input type="file" name="filename" id="filename"></td>
+			</tr>
+			<tr>
+				<td colpan="3">
+					<input type="submit">
+					<input type="reset">
+				</td>
+			</tr>
+		</table>
 	</form>
+	<br><div id='show'></div>
 </body>
+
 </html>
