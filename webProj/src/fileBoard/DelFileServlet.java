@@ -1,4 +1,4 @@
-package plugin;
+package fileBoard;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,35 +11,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import common.EmpDAO;
-import common.ScheduleVO;
+import common.DBCon;
 
-@WebServlet("/scheduleDelServlet")
-public class ScheduleDelServlet extends HttpServlet {
+@WebServlet("/delFileServlet")
+public class DelFileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public ScheduleDelServlet() {
+	public DelFileServlet() {
+		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-
+		int num = Integer.parseInt(request.getParameter("num"));
 		
+		FileVO vo = new FileVO();
+		vo.setNum(num);
+		
+		FileDAO dao = new FileDAO();	
+		dao.delFile(vo);		
 		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		String title = request.getParameter("title");
-		
-		ScheduleVO vo = new ScheduleVO();
-		vo.setTitle(title);
-		
-		EmpDAO dao = new EmpDAO();
-		dao.deleteSchedule(vo);
-		
+		doGet(request, response);
 	}
 
 }

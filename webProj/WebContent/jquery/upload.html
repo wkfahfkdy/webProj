@@ -13,35 +13,136 @@
 				dataType: 'json', // json -> object
 				success: function (result) {
 					// table로 리스트 출력
-					let tbl = $('<table />');
-					tbl.attr('border', '1');
+					let tbl = $('<table id="tbl"/>').attr('border', '1');
 					let tr = $('<tr />');
 
+					// 교수님 테이블 타이틀 (아래 function 있음) > result 결과를 table에 appedn
+					tbl.append(getTitle());
+
+
+					/* 내 테이블 타이틀
 					for (var fie in result[0]) {
 						let th = $('<th />');
 						th.html(fie);
 						tr.append(th);
 					}
 					tbl.append(tr);
+					*/
 
+					// 내 테이블
+					console.log(result[0]);
 					for (var i = 0; i < result.length; i++) {
-						console.log(result[i]);
 						let tr = $('<tr />');
+						let alink = $('<a />').attr('href', '#').html(result[i].title); // 제목 눌렀을 때 링크되게
+						alink.click(linkClickCallBack);
+
+						tr.click(function () {
+							console.log('tr클릭');
+						});
+
+						let btn = $('<button />').html('삭제');
+						let modifyBtn = $('#modifyBtn');
+
 						tr.append(
+							$('<td />').append(result[i].num).attr('align', 'right'),
+							$('<td />').append(alink).attr('align', 'right'),
+							$('<td />').append(result[i].author).attr('align', 'right'),
 							$('<td />').append(result[i].fileName),
-							$('<td />').append(result[i].author),
-							$('<td />').append(result[i].num),
-							$('<td />').append(result[i].title),
-							$('<td />').append(result[i].day)
-						)
+							$('<td />').append(result[i].day),
+							$('<td />').append(btn)
+						);
 						tbl.append(tr);
+						
+						btn.click(delClickCallBack);
+						modifyBtn.click(modiClickCallBack);
+						
 					}
+
+					/* 교수님 테이블
+					for (let obj of result) {
+						let $tr = $('<tr />');
+						tr.append(
+							$('<td />').html(obj.num),
+							$('<td />').html(obj.title),
+							$('<td />').html(obj.author),
+							$('<td />').html(obj.fileName),
+							$('<td />').html(obj.day)
+						);
+						tbl.append($tr);
+					}
+					*/
 					$('#show').append(tbl);
+
 				},
 				error: function (err) {
 					console.log(err);
 				}
 			});
+
+			// 삭제 클릭했을 시 callBack
+			function delClickCallBack() {
+				console.log($(this).parent().parent().children().eq(0).html());
+				let num = $(this).parent().parent().children().eq(0).html();
+				let delTr = $(this).parent().parent();
+
+				// db에서 삭제
+				$.ajax({
+					url: '../delFileServlet',
+					data: 'num=' + num,
+					success: function (result) {
+						// 화면에서 삭제
+						delTr.remove();
+						console.log('삭제 성공');
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			}
+
+			// 링크 클릭했을 시 callBack
+			function linkClickCallBack(e) {
+				console.log('a클릭', $(this).parentsUntil('table').eq(1).children().eq(0)
+			.html()); // $(this).parent().parent() = this.parentNode.parentNode
+				// table 을 포함하지 않는 parent 불러오기, eq(0)이 td, eq(1)이 tr이었음. 이후 child 의 eq(0) = num
+				let num = $(this) // a 태그
+					.parent() // td 태그
+					.prev() // this 태그(두번째 자리)의 앞자리(첫번째 자리 = num)
+					.html(); // = num의 html >> 위에 console.log 의 this 값과 같음
+
+				e.preventDefault(); // dafault 기능 차단
+				e.stopPropagation(); // a클릭을 제외하고는 나머지 이벤트 차단시켜줌. 이전에는 tr클릭까지 떴음 (이벤트 전파 차단)
+				$.ajax({
+					url: '../getFileServlet',
+					data: 'num=' + num,
+					dataType: 'json',
+					type: 'get', // data 가져올때는 get, 뭔가를 갱신? 같은거 할때는 post
+					success: function (result) {
+						console.log(result);
+						// 화면에 가져온 정보 띄우기
+						$('#num').val(result.num);
+						$('#author').val(result.author);
+						$('#title').val(result.title);
+						$('#img').attr('src', '../upload/' + result.fileName);
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			};
+
+			// 교수님 테이블 타이틀
+			function getTitle() {
+				let $title = $('<tr />');
+				$title.append(
+					$('<th />').html('번호'),
+					$('<th />').html('제목'),
+					$('<th />').html('저자'),
+					$('<th />').html('파일명'),
+					$('<th />').html('날짜')
+				);
+				return $title;
+			}
 
 			// 파일 선택하면 이미지 나오도록
 			$('#filename').change(function () { // 파일명 변경될 때 실행되ㄹ 기능?? 파일선택 안누르고 파일첨부 쪽 눌러도 눌려지는 기능??
@@ -69,6 +170,21 @@
 					data: data,
 					success: function (result) {
 						console.log(result);
+						let alink = $('<a />').attr('href', '#').html(result.title);
+						let btn = $('<button />').html('삭제');
+						alink.click(linkClickCallBack);
+
+						let tr = $('<tr />').append(
+							$('<td />').append(result.num).attr('align', 'right'),
+							$('<td />').append(alink).attr('align', 'right'),
+							$('<td />').append(result.author).attr('align', 'right'),
+							$('<td />').append(result.fileName),
+							$('<td />').append(result.day),
+							$('<td />').append(btn)
+						);
+
+						$('#tbl').append(tr);
+
 					},
 					error: function (err) {
 						console.log(err);
@@ -76,6 +192,20 @@
 				});
 			});
 			
+			// 수정 누를 시
+			function modiClickCallBack() {
+				$.ajax({
+					url: $('modifyBtn').attr('action'),
+					type: 'post',
+					success: function(result) {
+						console.log(result);
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});
+			}
+
 		});
 	</script>
 	<style>
@@ -83,13 +213,25 @@
 			height: 220px;
 			width: 180px;
 		}
+
+		#tbl {
+			border-collapse: collapse;
+		}
+
+		#show {
+			padding-top: 15px;
+		}
+
+		#frmtbl {
+			border-collapse: collapse;
+		}
 	</style>
 </head>
 
 <body>
 	<h1>Ajax 파일 업로드</h1>
 	<form id="frm" action="../fileUploadServlet" method="post" enctype="multipart/form-data">
-		<table border="1">
+		<table border="1", id="frmtbl">
 			<tr>
 				<td><label for="num">번호</label></td>
 				<td><input type="text" name="num" id="num"></td>
@@ -108,14 +250,12 @@
 				<td><input type="file" name="filename" id="filename"></td>
 			</tr>
 			<tr>
-				<td colpan="3">
-					<input type="submit">
-					<input type="reset">
-				</td>
+				<td colspan="2"><input type="submit"> <input type="reset"></td>
+				<td><button id='modifyBtn' action="../updateFileServlet">수정</button></td>
 			</tr>
 		</table>
 	</form>
-	<br><div id='show'></div>
+	<div id='show'></div>
 </body>
 
 </html>
