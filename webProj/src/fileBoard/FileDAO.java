@@ -146,38 +146,20 @@ public class FileDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
+		}
+		return file;
 		}
 		
-		return file;
-	}
+
 	
-	public FileVO updateFile(FileVO vo) {
+	public boolean updateFile(FileVO vo) {
 		conn = DBCon.getConnect();
 		PreparedStatement psmt = null;
-		String sql = "update file_board set title=?, author=?, filename=? where num=?";
-		String selectSql = "select * from file_board where num = ?";
-		
+		String sql = "update file_board set title=?, author=?, file_name=? where num=?";
+		// String selectSql = "select * from file_board where num = ?";
+		// 난 이거 필요할줄 알음
+		int modifyCnt = 0;
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, vo.getTitle());
@@ -185,9 +167,10 @@ public class FileDAO {
 			psmt.setString(3, vo.getFileName());
 			psmt.setInt(4, vo.getNum());
 			
-			psmt.executeUpdate();
+			modifyCnt = psmt.executeUpdate();
 			
-			// 수정된 전체정보 가져오도록
+		/*	// 수정된 전체정보 가져오도록
+		 * 그래서 이거도 만듬
 			psmt = conn.prepareStatement(selectSql);
 			psmt.setInt(1, vo.getNum());
 			rs = psmt.executeQuery();
@@ -198,28 +181,16 @@ public class FileDAO {
 				vo.setNum(rs.getInt("num"));
 				vo.setTitle(rs.getString("title"));				
 			}
+		*/
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		
 		
-		return vo;
+		return modifyCnt == 0? false : true;
 	}
 	
 	public void delFile(FileVO vo) {
@@ -253,5 +224,31 @@ public class FileDAO {
 			}
 		}
 		
+	}
+	
+	private void close() {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (psmt != null) {
+			try {
+				psmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+	}
+
 	}
 }

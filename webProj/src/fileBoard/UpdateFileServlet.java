@@ -34,24 +34,26 @@ public class UpdateFileServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		response.setCharacterEncoding("UTF-8");
 
-		String path = "C:/temp";
 
 		ServletContext sc = this.getServletContext();
-		path = sc.getRealPath("upload"); // 서버상경로
+		String path = sc.getRealPath("upload"); // 서버상경로
 
-		MultipartRequest multi = new MultipartRequest(request, path, 8 * 1024 * 1024, "UTF-8",
-				new DefaultFileRenamePolicy());
-		// 요청 정보, 저장 위치, 용량(5MB), 인코딩 방식, 중복 이름 파일일 시 1,2,3 ... 붙히는 기능
+		MultipartRequest multi = new MultipartRequest(
+				request, path, 8 * 1024 * 1024, "UTF-8", new DefaultFileRenamePolicy()
+		// 		요청 정보, 저장 위치,    용량(5MB),  인코딩 방식, 중복 이름 파일일 시 1,2,3 ... 붙히는 기능
+		);
 		Enumeration en = multi.getFileNames();
 
 		String author = multi.getParameter("author");
 		String title = multi.getParameter("title");
-		int num = Integer.parseInt(multi.getParameter("num"));
-		String fineN = null;
+		String num = multi.getParameter("num");
+		// int num = Integer.parseInt(multi.getParameter("num"));
+		// 교수님은 여기 대신 아래쪽에 Integer.parseInt(num) 으로 해결 하셨음
 		
+		String fineN = null;
 
 		while (en.hasMoreElements()) {
 			String name = (String) en.nextElement();
@@ -67,19 +69,65 @@ public class UpdateFileServlet extends HttpServlet {
 		vo.setAuthor(author);
 		vo.setFileName(fineN);
 		vo.setTitle(title);
-		vo.setNum(num);
+		vo.setNum(Integer.parseInt(num));
 
-		FileVO rvo = dao.updateFile(vo);
-
-		// 가져온 값을 json 형식으로 생성. {"num":?,"author":?,"title":?,"day":? ...}
+		// 가져온 값을 json 형식으로 생성. {"retCode":"Success"}
+		// retCode = returnCode 
 		JSONObject obj = new JSONObject();
-		obj.put("num", rvo.getNum());
-		obj.put("author", rvo.getAuthor());
-		obj.put("title", rvo.getTitle());
-		obj.put("day", rvo.getDay());
-		obj.put("fileName", rvo.getFileName());
-
+		if(dao.updateFile(vo)) {
+			obj.put("retCode", "Success");
+		} else {
+			obj.put("retCode", "Fail");
+		}
 		response.getWriter().print(obj);
 	}
 
 }
+
+/* doPost에 내가 작성했던 내용. 현 doPost는 교수님 작성
+response.setCharacterEncoding("UTF-8");
+
+String path = "C:/temp";
+
+ServletContext sc = this.getServletContext();
+path = sc.getRealPath("upload"); // 서버상경로
+
+MultipartRequest multi = new MultipartRequest(request, path, 8 * 1024 * 1024, "UTF-8",
+		new DefaultFileRenamePolicy());
+// 요청 정보, 저장 위치, 용량(5MB), 인코딩 방식, 중복 이름 파일일 시 1,2,3 ... 붙히는 기능
+Enumeration en = multi.getFileNames();
+
+String author = multi.getParameter("author");
+String title = multi.getParameter("title");
+int num = Integer.parseInt(multi.getParameter("num"));
+String fineN = null;
+
+
+while (en.hasMoreElements()) {
+	String name = (String) en.nextElement();
+	String fileName = multi.getFilesystemName(name);
+	fineN = fileName;
+	System.out.println("name: " + name + ", fileName: " + fileName);
+}
+
+// 입력 후 저장된 값 가져오기
+FileDAO dao = new FileDAO();
+FileVO vo = new FileVO();
+
+vo.setAuthor(author);
+vo.setFileName(fineN);
+vo.setTitle(title);
+vo.setNum(num);
+
+FileVO rvo = dao.updateFile(vo);
+
+// 가져온 값을 json 형식으로 생성. {"num":?,"author":?,"title":?,"day":? ...}
+JSONObject obj = new JSONObject();
+obj.put("num", rvo.getNum());
+obj.put("author", rvo.getAuthor());
+obj.put("title", rvo.getTitle());
+obj.put("day", rvo.getDay());
+obj.put("fileName", rvo.getFileName());
+
+response.getWriter().print(obj);
+*/

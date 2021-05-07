@@ -41,7 +41,6 @@
 						});
 
 						let btn = $('<button />').html('삭제');
-						let modifyBtn = $('#modifyBtn');
 
 						tr.append(
 							$('<td />').append(result[i].num).attr('align', 'right'),
@@ -54,7 +53,6 @@
 						tbl.append(tr);
 						
 						btn.click(delClickCallBack);
-						modifyBtn.click(modiClickCallBack);
 						
 					}
 
@@ -80,7 +78,8 @@
 			});
 
 			// 삭제 클릭했을 시 callBack
-			function delClickCallBack() {
+			function delClickCallBack(e) {
+				e.preventDefault();
 				console.log($(this).parent().parent().children().eq(0).html());
 				let num = $(this).parent().parent().children().eq(0).html();
 				let delTr = $(this).parent().parent();
@@ -192,20 +191,39 @@
 				});
 			});
 			
-			// 수정 누를 시
-			function modiClickCallBack() {
+			// 수정 버튼 누를 시
+			$('#modifyBtn').click(function(e) {
+				e.preventDefault();
+				let frm = document.getElementById('frm');
+				let data = new FormData(frm);
+				// 나는 내가 updateFileServlet을 만들었기 때문에
+				// 이게 fileUploadServlet 에만 쓰여야 할 줄 알았는데 여기서도 쓰인다.
+				
+				// ajax
 				$.ajax({
-					url: $('modifyBtn').attr('action'),
-					type: 'post',
+					contentType: false,	// 아직 이 2개의 의미를 모르겠다.
+					processData: false,	
+					url: '../updateFileServlet',
+					data: data,
+					type: 'post',	// Upload 에서는 form 형식 내애 post가 있어서 안적은듯
+					dataType: 'json', // 이게 Upload 에 json {} 이런거 안하고 return success 이런걸 했는데도 필요하네?
 					success: function(result) {
-						console.log(result);
+						if(result.retCode == 'Success'){
+							window.alert('수정ㅇ ')
+							// 수정되었으니 화면 갱신
+							
+						} else {
+							window.alert('수정ㄴ')
+						}
 					},
 					error: function(err) {
 						console.log(err);
 					}
+					
 				});
-			}
-
+				
+				
+			});
 		});
 	</script>
 	<style>
@@ -231,11 +249,11 @@
 <body>
 	<h1>Ajax 파일 업로드</h1>
 	<form id="frm" action="../fileUploadServlet" method="post" enctype="multipart/form-data">
-		<table border="1", id="frmtbl">
+		<table border="1" id="frmtbl">
 			<tr>
 				<td><label for="num">번호</label></td>
 				<td><input type="text" name="num" id="num"></td>
-				<td rowspan="4"><img sre="" alt="선택한 파일." id='img'></td>
+				<td rowspan="4"><img src="" alt="선택한 파일." id='img'></td>
 			</tr>
 			<tr>
 				<td><label for="author">저자</label></td>
@@ -251,7 +269,7 @@
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit"> <input type="reset"></td>
-				<td><button id='modifyBtn' action="../updateFileServlet">수정</button></td>
+				<td><button id='modifyBtn'>수정</button></td>
 			</tr>
 		</table>
 	</form>
